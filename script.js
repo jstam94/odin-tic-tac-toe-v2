@@ -2,7 +2,7 @@
 // Module to expose only needed game inputs
 
 gameController = (function(){
-    let currentPlayer;
+    let currentPlayer ='pie';
     let gameStarted = false;
     let gameOver = false;
     
@@ -42,11 +42,12 @@ let board = (function(){
     return {clear, select, get}
 })()
 
-start = function(){
+ function start (){
     if (gameOver || gameStarted) return;
     gameStarted = true;
-    players.selection()
+    players.selection();
     currentPlayer = players.getPlayers()[0]
+    console.log(currentPlayer)
 }
 
 restart = function(){
@@ -64,15 +65,26 @@ playRound = function(cell){
     (currentPlayer === players.getPlayers[0]) ? currentPlayer = players.getPlayers[1] : currentPlayer = players.getPlayers[0]
 }
 
+
 // {start, restart, playRound} should be only things exposed at end, will temporarily expose other things to test
 return {start, restart, playRound, players, board, currentPlayer}
 }) ()
 
 
 // Module that will controll gameController via Event Listeners
-screenController = (function(){
+// screenController = (function(){
+//     render = function (){
+//         console.log('render')
+//     }
     document.getElementById('start').addEventListener('click', () => gameController.start());
     
+//     let cells = document.querySelectorAll('.cell');
 
 
-})();
+//     cells.forEach(cell => {
+//         cell.addEventListener('click', () => {
+//             gameController.playRound(+cell.getAttribute('id'))
+//         })
+//     });
+
+// })();
