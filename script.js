@@ -33,9 +33,9 @@ let board = (function(){
             cell = null;
         });
     }
-    select = function(cell){
+    select = function(cell, mark){
         if (!(board[cell])){
-        board[cell] = currentPlayer.mark;
+        board[cell] = mark;
         } else return;
     }
 
@@ -46,25 +46,33 @@ start = function(){
     if (gameOver || gameStarted) return;
     gameStarted = true;
     players.selection()
-    currentPlayer = players.getPlayers[0]
+    currentPlayer = players.getPlayers()[0]
 }
 
 restart = function(){
 
 }
 
-playRound = function(position, player){
+let checkWinCondition = function (){
+console.log('running checkWinCondition')
+}
 
+playRound = function(cell){
+    if (gameOver || gameStarted) return;
+    board.select(cell, currentPlayer.mark);
+    checkWinCondition();
+    (currentPlayer === players.getPlayers[0]) ? currentPlayer = players.getPlayers[1] : currentPlayer = players.getPlayers[0]
 }
 
 // {start, restart, playRound} should be only things exposed at end, will temporarily expose other things to test
-return {start, restart, playRound, players, board}
+return {start, restart, playRound, players, board, currentPlayer}
 }) ()
 
 
 // Module that will controll gameController via Event Listeners
 screenController = (function(){
-
+    document.getElementById('start').addEventListener('click', () => gameController.start());
+    
 
 
 })();
