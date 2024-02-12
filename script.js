@@ -1,1 +1,1 @@
-alert('working')
+console.log('Script Connected');

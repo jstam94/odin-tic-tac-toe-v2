@@ -1,0 +1,12 @@
+.board{
+    display: flex;
+    flex-wrap: wrap;
+    width: 306px;
+}
+
+
+.cell{
+    height: 100px;
+    width: 100px;
+    border: 1px black solid;
+}
