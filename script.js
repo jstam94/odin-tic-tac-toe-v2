@@ -29,9 +29,16 @@ let players = (function(){
         players = [player1, player2]
         } else return;
     }
-    return {selection, getPlayers}
+    let clear = function () {
+        players = undefined;
+    }
+    return {selection, getPlayers, clear}
 })();
 
+let board = {
+
+
+}
 
 start = function(){
  
