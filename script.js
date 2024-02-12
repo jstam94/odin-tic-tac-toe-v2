@@ -1,5 +1,3 @@
-console.log('Script Connected');
-
 
 // Module to expose only needed game inputs
 
@@ -19,7 +17,6 @@ let players = (function(){
         let player1 = createPlayer( document.getElementById('player1').value, 'x')
         let player2 = createPlayer( document.getElementById('player2').value, 'o')
         players = [player1, player2];
-        currentPlayer = players[0];
         } else return;
     }
     let clear = function () {
@@ -37,10 +34,8 @@ let board = (function(){
         });
     }
     select = function(cell){
-        if (gameStarted){
-            if (!(board[cell])){
-            board[cell] = currentPlayer.mark;
-            } else return;
+        if (!(board[cell])){
+        board[cell] = currentPlayer.mark;
         } else return;
     }
 
@@ -48,7 +43,10 @@ let board = (function(){
 })()
 
 start = function(){
- 
+    if (gameOver || gameStarted) return;
+    gameStarted = true;
+    players.selection()
+    currentPlayer = players.getPlayers[0]
 }
 
 restart = function(){
