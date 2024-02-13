@@ -127,7 +127,9 @@ screenController = (function(){
         
         if (!game.gameOver){
             status.innerText = `It is ${game.currentPlayer.name}'s turn`
-        } 
+        } else if (game.winner){  
+            status.innerText = `${game.currentPlayer.name} won!!!!`
+        } else status.innerText = `It's a draw`
     }
     start.addEventListener('click', () =>{
         gameController.start();
