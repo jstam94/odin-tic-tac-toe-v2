@@ -53,7 +53,6 @@ let gameController = (function(){
     }
 
     let restart = function(){
-        console.log('restarting')
         winner = undefined;
         gameStarted = false;
         gameOver = false;
@@ -62,21 +61,17 @@ let gameController = (function(){
 
     let checkForWin = function (){
         function win(){
-            console.log('winner found')
             gameOver = true;
             winner = currentPlayer
         }
         
         function tie(){
-            console.log(`it's a tie`)
             gameOver = true;
             winner = null;
         }
         function checkForTie(){
-            console.log('checking for tie')
             if ((gameController.board.get().find((element) => element === null)) === undefined) tie();
         }
-        console.log(`Checking if ${currentPlayer.name} is the winner`)
         let winningCombos = [
         [0,1,2],
         [3,4,5],
@@ -107,10 +102,8 @@ let gameController = (function(){
     let playRound = function(cell){
         if (gameOver || !gameStarted || (board.get()[cell])) return;
         board.select(cell, currentPlayer.mark);
-        console.log(currentPlayer)
         checkForWin();
         switchPlayers()
-        console.log(currentPlayer)
     }
 
     let getBoard = () => board.get()
@@ -165,7 +158,6 @@ screenController = (function(){
 
     restart.addEventListener('click', () =>{
         gameController.restart();
-        console.log(gameController.getBoard())
         render();
     })
 
