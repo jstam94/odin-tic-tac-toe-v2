@@ -9,7 +9,6 @@ let gameController = (function(){
         return {currentPlayer, gameStarted, gameOver, winner}
     }
 
-    let turn = () => currentPlayer.name
     
     let players = (function(){
         let players;
@@ -61,12 +60,22 @@ let gameController = (function(){
 
     }
 
-    function win(){
-        console.log('winner found')
-        gameOver = true;
-    }
-
     let checkForWin = function (){
+        function win(){
+            console.log('winner found')
+            gameOver = true;
+            winner = currentPlayer
+        }
+        
+        function tie(){
+            console.log(`it's a tie`)
+            gameOver = true;
+            winner = null;
+        }
+        function checkForTie(){
+            console.log('checking for tie')
+            if ((gameController.board.get().find((element) => element === null)) === undefined) tie();
+        }
         console.log(`Checking if ${currentPlayer.name} is the winner`)
         let winningCombos = [
         [0,1,2],
@@ -78,12 +87,19 @@ let gameController = (function(){
         [0,4,8],
         [2,4,6],
         ]
-        
+    
         winningCombos.forEach(combo => {
-            if (board.get()[combo[0]] === currentPlayer.mark && board.get()[combo[1]] == currentPlayer.mark && board.get()[combo[2]] == currentPlayer.mark){
+            let mark = currentPlayer.mark;
+            if (board.get()[combo[0]] === mark && board.get()[combo[1]] == mark && board.get()[combo[2]] == mark){
                 win();
             }
-        });
+      
+        })
+        
+        if (!gameOver){
+            checkForTie();
+        }
+        ;
     }
 
     let playRound = function(cell){
@@ -92,7 +108,7 @@ let gameController = (function(){
     }
 
 
-return {start, restart, playRound, board, status, turn}
+return {start, restart, playRound, board, status}
 }) ()
 
 
@@ -111,7 +127,7 @@ screenController = (function(){
         
         if (!game.gameOver){
             status.innerText = `It is ${game.currentPlayer.name}'s turn`
-        }
+        } 
     }
     start.addEventListener('click', () =>{
         gameController.start();
@@ -120,8 +136,11 @@ screenController = (function(){
     
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
+            let game = gameController.status()
+            if (!game.gameOver && game.gameStarted){
             gameController.playRound(+cell.getAttribute('id'));
             render();
+            }
         })
     });
 
