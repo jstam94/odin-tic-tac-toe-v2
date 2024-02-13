@@ -38,8 +38,7 @@ let gameController = (function(){
         let select = function(cell, mark){
             if (!(board[cell])){
             board[cell] = mark;
-            checkForWin();
-            (currentPlayer === players.getPlayers()[0]) ? currentPlayer = players.getPlayers()[1] : currentPlayer = players.getPlayers()[0];
+           
             } else return;
         }
 
@@ -102,15 +101,21 @@ let gameController = (function(){
         }
         ;
     }
-
+    function switchPlayers(){
+    (currentPlayer === players.getPlayers()[0]) ? currentPlayer = players.getPlayers()[1] : currentPlayer = players.getPlayers()[0];
+}
     let playRound = function(cell){
-        if (gameOver || !gameStarted) return;
+        if (gameOver || !gameStarted || (board.get()[cell])) return;
         board.select(cell, currentPlayer.mark);
+        console.log(currentPlayer)
+        checkForWin();
+        switchPlayers()
+        console.log(currentPlayer)
     }
 
     let getBoard = () => board.get()
 
-return {start, restart, playRound, board, status, getBoard}
+return {start, restart, playRound, board, status, getBoard, switchPlayers, players}
 }) ()
 
 
@@ -132,7 +137,7 @@ screenController = (function(){
         if (!game.gameOver){
             status.innerText = `It is ${game.currentPlayer.name}'s turn`
         } else if (game.winner){  
-            status.innerText = `${game.currentPlayer.name} won!!!!`
+            status.innerText = `${game.winner.name} won!!!!`
         } else status.innerText = `It's a draw`
 
         if(!game.gameOver && !game.gameStarted) {
