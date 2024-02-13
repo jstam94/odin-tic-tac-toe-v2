@@ -70,7 +70,7 @@ let gameController = (function(){
             winner = null;
         }
         function checkForTie(){
-            if ((gameController.board.get().find((element) => element === null)) === undefined) tie();
+            if ((board.get().find((element) => element === null)) === undefined) tie();
         }
         let winningCombos = [
         [0,1,2],
@@ -108,7 +108,7 @@ let gameController = (function(){
 
     let getBoard = () => board.get()
 
-return {start, restart, playRound, status, getBoard}
+return {start, restart, playRound, status, getBoard, }
 }) ()
 
 
