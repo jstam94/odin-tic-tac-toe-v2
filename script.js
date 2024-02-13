@@ -33,9 +33,7 @@ let gameController = (function(){
         let board = [null, null, null, null, null, null, null, null, null,]
         let get = () => board;
         let clear = function (){
-            board.forEach(cell => {
-                cell = null;
-            });
+        board =  board.map((cell) => cell = null);
         }
         let select = function(cell, mark){
             if (!(board[cell])){
@@ -55,9 +53,12 @@ let gameController = (function(){
         currentPlayer = players.getPlayers()[0];
     }
 
-    restart = function(){
+    let restart = function(){
         console.log('restarting')
-
+        winner = undefined;
+        gameStarted = false;
+        gameOver = false;
+        board.clear();
     }
 
     let checkForWin = function (){
@@ -120,6 +121,7 @@ screenController = (function(){
     let start = document.getElementById('start');
     let status = document.getElementById('status');
     let restart = document.getElementById('restart');
+    let playerInputs = document.querySelectorAll('input');
 
     function render(){
         let game = gameController.status()
@@ -132,6 +134,14 @@ screenController = (function(){
         } else if (game.winner){  
             status.innerText = `${game.currentPlayer.name} won!!!!`
         } else status.innerText = `It's a draw`
+
+        if(!game.gameOver && !game.gameStarted) {
+            status.innerText = null;
+            playerInputs.forEach(input => {
+                input.value = null;
+            });
+        }
+
     }
     start.addEventListener('click', () =>{
         gameController.start();
@@ -150,6 +160,7 @@ screenController = (function(){
 
     restart.addEventListener('click', () =>{
         gameController.restart();
+        console.log(gameController.getBoard())
         render();
     })
 
