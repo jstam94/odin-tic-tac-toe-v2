@@ -1,10 +1,14 @@
 
 // Module to expose only needed game inputs
 
-gameController = (function(){
-    let currentPlayer ='pie';
-    let gameStarted = false;
-    let gameOver = false;
+let gameController = (function(){  
+let currentPlayer 
+let gameStarted = false;
+let gameOver = false;
+
+printStatus = function (){
+    console.log({currentPlayer, gameStarted, gameOver})
+}
     
 let players = (function(){
     let players;
@@ -28,63 +32,64 @@ let players = (function(){
 let board = (function(){
     let board = [null, null, null, null, null, null, null, null, null,]
     let get = () => board;
-    clear = function (){
+    let clear = function (){
         board.forEach(cell => {
             cell = null;
         });
     }
-    select = function(cell, mark){
+    let select = function(cell, mark){
         if (!(board[cell])){
         board[cell] = mark;
+        (currentPlayer === players.getPlayers()[0]) ? currentPlayer = players.getPlayers()[1] : currentPlayer = players.getPlayers()[0];
         } else return;
     }
 
     return {clear, select, get}
 })()
 
+
  function start (){
     if (gameOver || gameStarted) return;
     gameStarted = true;
     players.selection();
-    currentPlayer = players.getPlayers()[0]
-    console.log(currentPlayer)
+    currentPlayer = players.getPlayers()[0];
 }
 
 restart = function(){
 
 }
 
-let checkWinCondition = function (){
-console.log('running checkWinCondition')
-}
+// let checkWinCondition = function (){
+// console.log('running checkWinCondition')
+// }
 
-playRound = function(cell){
-    if (gameOver || gameStarted) return;
+let playRound = function(cell){
+    if (gameOver || !gameStarted) return;
+    console.log(cell, currentPlayer.mark)
     board.select(cell, currentPlayer.mark);
-    checkWinCondition();
-    (currentPlayer === players.getPlayers[0]) ? currentPlayer = players.getPlayers[1] : currentPlayer = players.getPlayers[0]
+    // checkWinCondition();
 }
 
 
 // {start, restart, playRound} should be only things exposed at end, will temporarily expose other things to test
-return {start, restart, playRound, players, board, currentPlayer}
+return {start, restart, playRound, board, printStatus, players}
 }) ()
 
 
 // Module that will controll gameController via Event Listeners
-// screenController = (function(){
-//     render = function (){
-//         console.log('render')
-//     }
-    document.getElementById('start').addEventListener('click', () => gameController.start());
+
+screenController = (function(){
+   
+     document.getElementById('start').addEventListener('click', () => gameController.start());
     
-//     let cells = document.querySelectorAll('.cell');
+    let cells = document.querySelectorAll('.cell');
 
 
-//     cells.forEach(cell => {
-//         cell.addEventListener('click', () => {
-//             gameController.playRound(+cell.getAttribute('id'))
-//         })
-//     });
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            console.log('click');
+            gameController.playRound(+cell.getAttribute('id'))
+        })
+    });
 
-// })();
+})();
