@@ -108,7 +108,7 @@ let gameController = (function(){
 
     let getBoard = () => board.get()
 
-return {start, restart, playRound, board, status, getBoard, switchPlayers, players}
+return {start, restart, playRound, status, getBoard}
 }) ()
 
 
