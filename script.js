@@ -1,12 +1,15 @@
 let gameController = (function(){  
 
     let currentPlayer 
+    let winner 
     let gameStarted = false;
     let gameOver = false;
-
-    printStatus = function (){
-        console.log({currentPlayer, gameStarted, gameOver})
+    
+    let status = function (){
+        return {currentPlayer, gameStarted, gameOver, winner}
     }
+
+    let turn = () => currentPlayer.name
     
     let players = (function(){
         let players;
@@ -89,7 +92,7 @@ let gameController = (function(){
     }
 
 
-return {start, restart, playRound, board, printStatus}
+return {start, restart, playRound, board, status, turn}
 }) ()
 
 
@@ -97,17 +100,24 @@ return {start, restart, playRound, board, printStatus}
 
 screenController = (function(){
     let cells = document.querySelectorAll('.cell');
+    let start = document.getElementById('start');
+    let status = document.getElementById('status');
 
     function render(){
+        let game = gameController.status()
         cells.forEach(cell => {
             cell.textContent = gameController.board.get()[+cell.getAttribute('id')]
         });
+        
+        if (!game.gameOver){
+            status.innerText = `It is ${game.currentPlayer.name}'s turn`
+        }
     }
-     document.getElementById('start').addEventListener('click', () => gameController.start());
+    start.addEventListener('click', () =>{
+        gameController.start();
+        render();
+    });
     
-    
-
-
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
             gameController.playRound(+cell.getAttribute('id'));
