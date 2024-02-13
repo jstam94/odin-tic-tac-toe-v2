@@ -48,7 +48,6 @@ let gameController = (function(){
         return {clear, select, get}
     })()
 
-
     function start (){
         if (gameOver || gameStarted) return;
         gameStarted = true;
@@ -57,6 +56,7 @@ let gameController = (function(){
     }
 
     restart = function(){
+        console.log('restarting')
 
     }
 
@@ -107,8 +107,9 @@ let gameController = (function(){
         board.select(cell, currentPlayer.mark);
     }
 
+    let getBoard = () => board.get()
 
-return {start, restart, playRound, board, status}
+return {start, restart, playRound, board, status, getBoard}
 }) ()
 
 
@@ -118,11 +119,12 @@ screenController = (function(){
     let cells = document.querySelectorAll('.cell');
     let start = document.getElementById('start');
     let status = document.getElementById('status');
+    let restart = document.getElementById('restart');
 
     function render(){
         let game = gameController.status()
         cells.forEach(cell => {
-            cell.textContent = gameController.board.get()[+cell.getAttribute('id')]
+            cell.textContent = gameController.getBoard()[+cell.getAttribute('id')]
         });
         
         if (!game.gameOver){
@@ -145,5 +147,10 @@ screenController = (function(){
             }
         })
     });
+
+    restart.addEventListener('click', () =>{
+        gameController.restart();
+        render();
+    })
 
 })();
